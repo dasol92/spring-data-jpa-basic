@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@Rollback(false)
+//@Rollback(false)
 class MemberJpaRepositoryTest {
     @Autowired
     private MemberJpaRepository memberJpaRepository;
@@ -27,7 +27,7 @@ class MemberJpaRepositoryTest {
         Member findMember = memberJpaRepository.find(savedMember.getId());
 
         assertThat(findMember.getId()).isEqualTo(member.getId());
-        assertThat(findMember.getUserName()).isEqualTo(member.getUserName());
+        assertThat(findMember.getUsername()).isEqualTo(member.getUsername());
         assertThat(findMember).isEqualTo(member);
     }
 
@@ -64,10 +64,19 @@ class MemberJpaRepositoryTest {
         memberJpaRepository.save(m1);
         memberJpaRepository.save(m2);
         List<Member> result =
-                memberJpaRepository.findByUserNameAndAgeGreaterThan("AAA", 15);
-        assertThat(result.get(0).getUserName()).isEqualTo("AAA");
+                memberJpaRepository.findByUsernameAndAgeGreaterThan("AAA", 15);
+        assertThat(result.get(0).getUsername()).isEqualTo("AAA");
         assertThat(result.get(0).getAge()).isEqualTo(20);
         assertThat(result.size()).isEqualTo(1);
     }
 
+    @Test
+    void findByUserName() {
+        Member m1 = new Member("AAA");
+        Member m2 = new Member("BBB");
+        memberJpaRepository.save(m1);
+        memberJpaRepository.save(m2);
+        List<Member> result = memberJpaRepository.findByUsername("AAA");
+        assertThat(result.get(0)).isEqualTo(m1);
+    }
 }

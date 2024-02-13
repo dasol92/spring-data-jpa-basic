@@ -6,7 +6,7 @@ import study.datajpa.entity.Member;
 import java.util.List;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    List<Member> findByUserNameAndAgeGreaterThan(String userName, int age);
+    List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
 
-    List<Member> findByUserNameAndAgeLessThan(String userName, int age);
+    List<Member> findByUsernameAndAgeLessThan(String username, int age);
 }
