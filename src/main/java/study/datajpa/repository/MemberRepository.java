@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findByUserNameAndAgeGreaterThan(String userName, int age);
+
+    List<Member> findByUserNameAndAgeLessThan(String userName, int age);
 }
