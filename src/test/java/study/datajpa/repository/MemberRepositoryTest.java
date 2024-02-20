@@ -213,8 +213,7 @@ public class MemberRepositoryTest {
         em.flush();
         em.clear();
 
-//        List<Member> members = memberRepository.findAll();
-        List<Member> members = memberRepository.findMemberFetchJoin();
+        List<Member> members = memberRepository.findAll();
 
         for (Member member : members) {
             System.out.println("member = " + member);
