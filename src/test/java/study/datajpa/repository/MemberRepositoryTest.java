@@ -1,5 +1,7 @@
 package study.datajpa.repository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +21,10 @@ import static org.assertj.core.api.Assertions.*;
 @Transactional
 //@Rollback(false)
 public class MemberRepositoryTest {
-    @Autowired MemberRepository memberRepository;
-    @Autowired TeamRepository teamRepository;
+    @Autowired private MemberRepository memberRepository;
+    @Autowired private TeamRepository teamRepository;
+    @PersistenceContext
+    private EntityManager em;
 
     @Test
     public void testMember() {
@@ -192,5 +196,29 @@ public class MemberRepositoryTest {
         System.out.println("resultCount = " + resultCount);
 
         assertThat(resultCount).isEqualTo(3);
+    }
+
+    @Test
+    public void findMemberLazy() {
+        Team teamAce = new Team("ACE");
+        Team teamBravo = new Team("BRAVO");
+        teamRepository.save(teamAce);
+        teamRepository.save(teamBravo);
+
+        Member memberA = new Member("AAA", 10, teamAce);
+        Member memberB = new Member("BBB", 20, teamBravo);
+        memberRepository.save(memberA);
+        memberRepository.save(memberB);
+
+        em.flush();
+        em.clear();
+
+//        List<Member> members = memberRepository.findAll();
+        List<Member> members = memberRepository.findMemberFetchJoin();
+
+        for (Member member : members) {
+            System.out.println("member = " + member);
+            System.out.println("member.getTeam() = " + member.getTeam());
+        }
     }
 }
