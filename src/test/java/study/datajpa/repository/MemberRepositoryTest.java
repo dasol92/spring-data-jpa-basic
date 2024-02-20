@@ -178,4 +178,19 @@ public class MemberRepositoryTest {
         assertThat(page.isFirst()).isTrue();
         assertThat(page.hasNext()).isTrue();
     }
+
+    @Test
+    public void bulkUpdate() {
+        memberRepository.save(new Member("member1", 9));
+        memberRepository.save(new Member("member2", 19));
+        memberRepository.save(new Member("member3", 29));
+        memberRepository.save(new Member("member4", 39));
+        memberRepository.save(new Member("member5", 49));
+
+        int resultCount = memberRepository.bulkAgePlus(20);
+
+        System.out.println("resultCount = " + resultCount);
+
+        assertThat(resultCount).isEqualTo(3);
+    }
 }

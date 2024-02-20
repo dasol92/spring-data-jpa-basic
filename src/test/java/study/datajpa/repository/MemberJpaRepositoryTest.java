@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-//@Rollback(false)
+@Rollback(false)
 class MemberJpaRepositoryTest {
     @Autowired
     private MemberJpaRepository memberJpaRepository;
@@ -100,5 +100,20 @@ class MemberJpaRepositoryTest {
         // then
         assertThat(members).hasSize(3);
         assertThat(totalCount).isEqualTo(5);
+    }
+
+    @Test
+    public void bulkUpdate() {
+        memberJpaRepository.save(new Member("member1", 9));
+        memberJpaRepository.save(new Member("member2", 19));
+        memberJpaRepository.save(new Member("member3", 29));
+        memberJpaRepository.save(new Member("member4", 39));
+        memberJpaRepository.save(new Member("member5", 49));
+
+        int resultCount = memberJpaRepository.bulkAgePlus(20);
+
+        System.out.println("resultCount = " + resultCount);
+
+        assertThat(resultCount).isEqualTo(3);
     }
 }
