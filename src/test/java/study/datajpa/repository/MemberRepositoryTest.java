@@ -244,4 +244,18 @@ public class MemberRepositoryTest {
         //when
         List<Member> result = memberRepository.findLockByUsername("member1");
     }
+
+    @Test
+    public void customRepository() {
+        Member m1 = new Member("AAA", 10);
+        Member m2 = new Member("BBB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        List<Member> memberCustom = memberRepository.findMemberCustom();
+        for (Member member : memberCustom) {
+            System.out.println("member = " + member);
+        }
+
+    }
 }
